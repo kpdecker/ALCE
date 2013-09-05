@@ -38,4 +38,37 @@ describe('alce', function () {
       });
     });
   });
+
+  describe('accessor', function() {
+    describe('objects', function() {
+      var config;
+      beforeEach(function() {
+        config = alce('{\n  foo:\n    // a comment\n    true\n}');
+      });
+      it('should return values', function() {
+        config.get('foo').should.equal(true);
+      });
+      it('should return complex values', function() {
+        config = alce('{\n  foo:\n    // a comment\n    {bar: "bat"}\n}');
+        config.get('foo').get('bar').should.equal('bat');
+      });
+    });
+    describe('arrays', function() {
+      var config;
+      beforeEach(function() {
+        config = alce('[\n    // a comment\n    true\n]');
+      });
+
+      it('should return values', function() {
+        config.get(0).should.equal(true);
+      });
+      it('sold return complex values', function() {
+        config = alce('[[\n    // a comment\n    true\n]]');
+        config.get(0).get(0).should.equal(true);
+      });
+      it('should return length', function() {
+        config.length.should.equal(1);
+      });
+    });
+  });
 });
