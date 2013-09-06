@@ -3,7 +3,6 @@ var util = require('../lib/util');
 describe('util', function() {
   describe('#calcIndent', function() {
     it('should look at the last line only', function() {
-      console.log(util);
       util.calcIndent('\n\n  \n\n    ').should.equal('    ');
     });
     it('should strip comments', function() {
