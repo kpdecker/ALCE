@@ -52,6 +52,14 @@ describe('alce', function () {
         config = alce('{\n  foo:\n    // a comment\n    {bar: "bat"}\n}');
         config.get('foo').get('bar').should.equal('bat');
       });
+      it('should update existing values', function() {
+        config.set('foo', false);
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    false\n}');
+      });
+      it('should update existing values', function() {
+        config.set('foo', {foo: 'bar'});
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    {"foo":"bar"}\n}');
+      });
     });
     describe('arrays', function() {
       var config;
@@ -68,6 +76,15 @@ describe('alce', function () {
       });
       it('should return length', function() {
         config.length.should.equal(1);
+      });
+
+      it('should update existing values', function() {
+        config.set(0, false);
+        config.toString().should.equal('[\n    // a comment\n    false\n]');
+      });
+      it('should update existing values with complex', function() {
+        config.set(0, {foo: 'bar'});
+        config.toString().should.equal('[\n    // a comment\n    {"foo":"bar"}\n]');
       });
     });
   });
