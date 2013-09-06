@@ -34,7 +34,7 @@ describe('alce', function () {
         arrays: [ 'foo', 9, {bar: true}, [{nested: true}]],
 
         expression: ({foo : true}),
-        "other stuff": true,
+        "other stuff": true
       });
     });
   });
@@ -59,6 +59,52 @@ describe('alce', function () {
       it('should update existing values', function() {
         config.set('foo', {foo: 'bar'});
         config.toString().should.equal('{\n  foo:\n    // a comment\n    {"foo":"bar"}\n}');
+      });
+      it('should insert new formatted values', function() {
+        config = alce('{\n  foo:\n    // a comment\n    true\n}', {
+          insertFormatter: function(parent, insert) {
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + alce.calcIndent(parent.preamble);
+          },
+          propertyFormatter: function(parent, property) {
+            property.separator = ': ';
+          }
+        });
+        config.set('bar', true);
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": true\n}');
+      });
+      it('should insert new object values', function() {
+        config = alce('{\n  foo:\n    // a comment\n    true\n}', {
+          objectFormatter: function(parent, object) {
+            object.indent = alce.calcIndent(parent.preamble);
+            object.innerPrologue = '\n' + object.indent;
+          },
+          insertFormatter: function(parent, insert) {
+            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
+          },
+          propertyFormatter: function(parent, property) {
+            property.separator = ': ';
+          }
+        });
+        config.set('bar', {foo: 'bar', baz: 'bat'});
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": {\n    "foo": "bar",\n    "baz": "bat"\n  }\n}');
+      });
+      it('should insert new array values', function() {
+        config = alce('{\n  foo:\n    // a comment\n    true\n}', {
+          objectFormatter: function(parent, object) {
+            object.indent = alce.calcIndent(parent.preamble);
+            object.innerPrologue = '\n' + object.indent;
+          },
+          insertFormatter: function(parent, insert) {
+            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
+          },
+          propertyFormatter: function(parent, property) {
+            property.separator = ': ';
+          }
+        });
+        config.set('bar', [1,2]);
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": [\n    1,\n    2\n  ]\n}');
       });
     });
     describe('arrays', function() {
@@ -85,6 +131,49 @@ describe('alce', function () {
       it('should update existing values with complex', function() {
         config.set(0, {foo: 'bar'});
         config.toString().should.equal('[\n    // a comment\n    {"foo":"bar"}\n]');
+      });
+      it('should insert new formatted values', function() {
+        config = alce('[\n    // a comment\n    true\n]', {
+          insertFormatter: function(parent, insert) {
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + alce.calcIndent(parent.preamble);
+          },
+          propertyFormatter: function(parent, property) {
+            property.separator = ': ';
+          }
+        });
+        config.set(1, true);
+        config.toString().should.equal('[\n    // a comment\n    true,\n  true\n]');
+      });
+      it('should insert new object values', function() {
+        config = alce('[\n    // a comment\n    true\n]', {
+          objectFormatter: function(parent, object) {
+            object.indent = alce.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+            object.innerPrologue = '\n' + object.indent;
+          },
+          insertFormatter: function(parent, insert) {
+            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
+          },
+          propertyFormatter: function(parent, property) {
+            property.separator = ': ';
+          }
+        });
+        config.set(1, {foo: 'bar', baz: 'bat'});
+        config.toString().should.equal('[\n    // a comment\n    true,\n  {\n    "foo": "bar",\n    "baz": "bat"\n  }\n]');
+      });
+      it('should insert new array values', function() {
+        config = alce('[\n    // a comment\n    true\n]', {
+          objectFormatter: function(parent, object) {
+            object.indent = alce.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+            object.innerPrologue = '\n' + object.indent;
+          },
+          insertFormatter: function(parent, insert) {
+            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
+          }
+        });
+        config.set(1, [1,2]);
+        config.toString().should.equal('[\n    // a comment\n    true,\n  [\n    1,\n    2\n  ]\n]');
       });
     });
   });
