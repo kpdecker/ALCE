@@ -1,15 +1,15 @@
 'use strict';
 
-var alce = require('../lib/alce'),
+var ALCE = require('../lib/alce'),
     fs = require('fs');
 
 require('should');
 
-describe('alce', function () {
+describe('ALCE', function () {
   describe('parser', function() {
     function parser(name, value) {
       it(name, function() {
-        alce(value).toString().should.equal(value);
+        ALCE.parse(value, {meta: true}).toString().should.equal(value);
       });
     }
     parser('should parse simple objects', '{ foo: "bar"}');
@@ -18,14 +18,18 @@ describe('alce', function () {
 
     it('should parse complicated objects', function () {
       var src = fs.readFileSync(__dirname + '/artifacts/lumbar.json');
-      alce(src).toString().should.equal(src.toString());
+      ALCE.stringify(ALCE.parse(src, {meta: true})).should.equal(src.toString());
+    });
+
+    it('should parse to a javascript object', function() {
+      ALCE.parse('{ foo: "bar"}').should.eql({ foo: "bar"});
     });
   });
 
   describe('#toObject', function() {
     it('should remove metadata with toObject', function() {
       var src = fs.readFileSync(__dirname + '/artifacts/lumbar.json');
-      alce(src).toObject().should.eql({
+      ALCE.parse(src, {meta: true}).toObject().should.eql({
         modules: {
           foo: {},
           bar: {}
@@ -43,13 +47,13 @@ describe('alce', function () {
     describe('objects', function() {
       var config;
       beforeEach(function() {
-        config = alce('{\n  foo:\n    // a comment\n    true\n}');
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {meta: true});
       });
       it('should return values', function() {
         config.get('foo').should.equal(true);
       });
       it('should return complex values', function() {
-        config = alce('{\n  foo:\n    // a comment\n    {bar: "bat"}\n}');
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    {bar: "bat"}\n}', {meta: true});
         config.get('foo').get('bar').should.equal('bat');
       });
       it('should update existing values', function() {
@@ -61,9 +65,10 @@ describe('alce', function () {
         config.toString().should.equal('{\n  foo:\n    // a comment\n    {"foo":"bar"}\n}');
       });
       it('should insert new formatted values', function() {
-        config = alce('{\n  foo:\n    // a comment\n    true\n}', {
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {
+          meta: true,
           insertFormatter: function(parent, insert) {
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + alce.calcIndent(parent.preamble);
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + ALCE.calcIndent(parent.preamble);
           },
           propertyFormatter: function(parent, property) {
             property.separator = ': ';
@@ -73,13 +78,14 @@ describe('alce', function () {
         config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": true\n}');
       });
       it('should insert new object values', function() {
-        config = alce('{\n  foo:\n    // a comment\n    true\n}', {
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {
+          meta: true,
           objectFormatter: function(parent, object) {
-            object.indent = alce.calcIndent(parent.preamble);
+            object.indent = ALCE.calcIndent(parent.preamble);
             object.innerPrologue = '\n' + object.indent;
           },
           insertFormatter: function(parent, insert) {
-            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
           },
           propertyFormatter: function(parent, property) {
@@ -90,13 +96,14 @@ describe('alce', function () {
         config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": {\n    "foo": "bar",\n    "baz": "bat"\n  }\n}');
       });
       it('should insert new array values', function() {
-        config = alce('{\n  foo:\n    // a comment\n    true\n}', {
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {
+          meta: true,
           objectFormatter: function(parent, object) {
-            object.indent = alce.calcIndent(parent.preamble);
+            object.indent = ALCE.calcIndent(parent.preamble);
             object.innerPrologue = '\n' + object.indent;
           },
           insertFormatter: function(parent, insert) {
-            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
           },
           propertyFormatter: function(parent, property) {
@@ -110,14 +117,14 @@ describe('alce', function () {
     describe('arrays', function() {
       var config;
       beforeEach(function() {
-        config = alce('[\n    // a comment\n    true\n]');
+        config = ALCE.parse('[\n    // a comment\n    true\n]', {meta: true});
       });
 
       it('should return values', function() {
         config.get(0).should.equal(true);
       });
       it('sold return complex values', function() {
-        config = alce('[[\n    // a comment\n    true\n]]');
+        config = ALCE.parse('[[\n    // a comment\n    true\n]]', {meta: true});
         config.get(0).get(0).should.equal(true);
       });
       it('should return length', function() {
@@ -133,9 +140,10 @@ describe('alce', function () {
         config.toString().should.equal('[\n    // a comment\n    {"foo":"bar"}\n]');
       });
       it('should insert new formatted values', function() {
-        config = alce('[\n    // a comment\n    true\n]', {
+        config = ALCE.parse('[\n    // a comment\n    true\n]', {
+          meta: true,
           insertFormatter: function(parent, insert) {
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + alce.calcIndent(parent.preamble);
+            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + ALCE.calcIndent(parent.preamble);
           },
           propertyFormatter: function(parent, property) {
             property.separator = ': ';
@@ -145,13 +153,14 @@ describe('alce', function () {
         config.toString().should.equal('[\n    // a comment\n    true,\n  true\n]');
       });
       it('should insert new object values', function() {
-        config = alce('[\n    // a comment\n    true\n]', {
+        config = ALCE.parse('[\n    // a comment\n    true\n]', {
+          meta: true,
           objectFormatter: function(parent, object) {
-            object.indent = alce.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+            object.indent = ALCE.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
             object.innerPrologue = '\n' + object.indent;
           },
           insertFormatter: function(parent, insert) {
-            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
           },
           propertyFormatter: function(parent, property) {
@@ -162,13 +171,14 @@ describe('alce', function () {
         config.toString().should.equal('[\n    // a comment\n    true,\n  {\n    "foo": "bar",\n    "baz": "bat"\n  }\n]');
       });
       it('should insert new array values', function() {
-        config = alce('[\n    // a comment\n    true\n]', {
+        config = ALCE.parse('[\n    // a comment\n    true\n]', {
+          meta: true,
           objectFormatter: function(parent, object) {
-            object.indent = alce.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+            object.indent = ALCE.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
             object.innerPrologue = '\n' + object.indent;
           },
           insertFormatter: function(parent, insert) {
-            var indent = parent.indent || alce.calcIndent(parent.preamble);
+            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
           }
         });
