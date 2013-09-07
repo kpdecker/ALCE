@@ -7,6 +7,7 @@ Human friendly, machine editable, JSON-like config file format. Takes the JSON o
 Extends JSON to allow for:
 
 - Comments
+- Regular expressions
 - Relaxed identifier and syntax handling
 
 ## Example
