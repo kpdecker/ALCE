@@ -132,6 +132,11 @@ describe('ALCE', function () {
         config.set('bar', /foo/g);
         config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": /foo/g\n}');
       });
+      it('should insert falsy values', function() {
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', ALCE.TWO_SPACE_FORMATTER);
+        config.set('bar', undefined);
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": undefined\n}');
+      });
     });
     describe('arrays', function() {
       var config;
