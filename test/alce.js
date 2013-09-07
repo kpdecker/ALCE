@@ -12,6 +12,9 @@ describe('ALCE', function () {
       });
     }
     parser('should parse simple objects', '{ foo: "bar"}');
+    parser('should parse simple objects with trailing', '{ foo: "bar",}');
+    parser('should parse simple objects with regexs', '{ foo: /foo/g}');
+    parser('should parse simple objects with falsy', '{ foo: undefined, bar: null}');
     parser('should parse arrays', '["bar", 1, true]');
     parser('should parse comments around', '/*comment1*/ { foo: "bar"} // comment 2\n');
 
