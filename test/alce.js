@@ -1,9 +1,8 @@
 'use strict';
 
 var ALCE = require('../lib/alce'),
-    fs = require('fs');
-
-require('should');
+    fs = require('fs'),
+    should = require('should');
 
 describe('ALCE', function () {
   describe('#parse', function() {
@@ -23,6 +22,19 @@ describe('ALCE', function () {
 
     it('should parse to a javascript object', function() {
       ALCE.parse('{ foo: "bar"}').should.eql({ foo: "bar"});
+    });
+
+    describe('error handling', function() {
+      it('should handle errors safely', function() {
+        try {
+          ALCE.parse('\n[ foo: "bar"]');
+          should.fail();
+        } catch (err) {
+          console.log(err);
+          err.message.should.match(/Line: 2 Column: 6 - Unexpected token :/);
+          err.stack.should.match(/\s*at .*?\.parse.*alce\.js/);
+        }
+      });
     });
   });
 
