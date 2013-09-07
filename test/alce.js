@@ -6,7 +6,7 @@ var ALCE = require('../lib/alce'),
 require('should');
 
 describe('ALCE', function () {
-  describe('parser', function() {
+  describe('#parse', function() {
     function parser(name, value) {
       it(name, function() {
         ALCE.parse(value, {meta: true}).toString().should.equal(value);
@@ -23,6 +23,21 @@ describe('ALCE', function () {
 
     it('should parse to a javascript object', function() {
       ALCE.parse('{ foo: "bar"}').should.eql({ foo: "bar"});
+    });
+  });
+
+  describe('#stringify', function() {
+    it('should convert to strings', function() {
+      ALCE.stringify(ALCE.parse('{foo: "bar"}', {meta: true})).should.equal('{foo: "bar"}');
+    });
+    it('should handle javascript objects', function() {
+      ALCE.stringify({foo: "bar"}).should.equal('{"foo":"bar"}');
+    });
+    it('should allow formatter', function() {
+      ALCE.stringify({foo: "bar"}, ALCE.TWO_SPACE_FORMATTER).should.equal('{\n  "foo": "bar"\n}');
+    });
+    it('should handle undefined', function() {
+      ALCE.stringify().should.equal('undefined');
     });
   });
 

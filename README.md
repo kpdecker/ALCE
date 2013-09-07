@@ -102,7 +102,11 @@ Called when a new object or array is created. Generally `parent` will be an arra
 
 ```javascript
   objectFormatter: function(parent, object) {
-    object.indent = ALCE.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+    if (parent) {
+      object.indent = exports.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+    } else {
+      object.indent = '';
+    }
     object.innerPrologue = '\n' + object.indent;
   },
 ```
