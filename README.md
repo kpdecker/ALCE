@@ -2,6 +2,20 @@
 
 Accepting Language Config Environment
 
+#### Array-like methods
+
+ACLE instances representing arrays additionally implement:
+
+- `length`
+- `push`
+- `pop`
+- `unshift`
+- `shift`
+- `splice`
+
+All of which behave as they would if operating on an normal array.
+
+
 Human friendly JSON-like config file format. Takes the JSON out of humans' nightmares.
 #### #objectFormatter(parent, object)
 
