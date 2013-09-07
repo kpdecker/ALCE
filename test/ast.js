@@ -1,4 +1,5 @@
-var ast = require('../lib/ast');
+var ast = require('../lib/ast'),
+    should = require('should');
 
 describe('ast', function() {
   describe('#fromValue', function() {
@@ -34,6 +35,17 @@ describe('ast', function() {
       exec('true', '"true"');
       exec(0, '0');
       exec(1, '1');
+    });
+    it('should handle undefined values', function() {
+        var value = ast.fromValue(undefined);
+        value.should.be.instanceof(ast.Value);
+        should.not.exist(value.value);
+        value.source.should.equal('undefined');
+
+        value = ast.fromValue(null);
+        value.should.be.instanceof(ast.Value);
+        should.not.exist(value.value);
+        value.source.should.equal('null');
     });
 
     it('should maintain formatting for javascript objects', function() {

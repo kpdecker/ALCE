@@ -69,9 +69,6 @@ describe('ALCE', function () {
           meta: true,
           insertFormatter: function(parent, insert) {
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + ALCE.calcIndent(parent.preamble);
-          },
-          propertyFormatter: function(parent, property) {
-            property.separator = ': ';
           }
         });
         config.set('bar', true);
@@ -87,9 +84,6 @@ describe('ALCE', function () {
           insertFormatter: function(parent, insert) {
             var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          },
-          propertyFormatter: function(parent, property) {
-            property.separator = ': ';
           }
         });
         config.set('bar', {foo: 'bar', baz: 'bat'});
@@ -105,9 +99,6 @@ describe('ALCE', function () {
           insertFormatter: function(parent, insert) {
             var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          },
-          propertyFormatter: function(parent, property) {
-            property.separator = ': ';
           }
         });
         config.set('bar', [1,2]);
@@ -144,9 +135,6 @@ describe('ALCE', function () {
           meta: true,
           insertFormatter: function(parent, insert) {
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + ALCE.calcIndent(parent.preamble);
-          },
-          propertyFormatter: function(parent, property) {
-            property.separator = ': ';
           }
         });
         config.set(1, true);
@@ -162,9 +150,6 @@ describe('ALCE', function () {
           insertFormatter: function(parent, insert) {
             var indent = parent.indent || ALCE.calcIndent(parent.preamble);
             insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          },
-          propertyFormatter: function(parent, property) {
-            property.separator = ': ';
           }
         });
         config.set(1, {foo: 'bar', baz: 'bat'});

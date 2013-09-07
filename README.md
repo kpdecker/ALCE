@@ -1,6 +1,23 @@
 # ALCE
 
 Accepting Language Config Environment
+## API
+
+### ALCE.parse(configSource, options)
+
+Parses a string containing a ACLE source file. Returns an ACLE object.
+
+- `configSource`: String representation of the configuration file
+- `options`: Options hash.
+  - `meta` : Set to truthy to return an editable version of the config that may be reconstructed. Falsy returns generic javascript object. See [#toObject](#toObject).
+  - Formatter options. See [Formatters](#formatters) for more info
+
+### ALCE.stringify(object, options)
+
+Converts a ACLE or javascript object to it's string representation.
+
+- `object`: Object to convert to a string
+- `options`: Formatter options when converting a javascript object. See [Formatters](#formatters) for more info.
 
 #### Array-like methods
 
