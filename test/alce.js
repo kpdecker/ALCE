@@ -25,15 +25,35 @@ describe('ALCE', function () {
     });
 
     describe('error handling', function() {
-      it('should handle errors safely', function() {
+      it('should handle syntax errors safely', function() {
         try {
           ALCE.parse('\n[ foo: "bar"]');
-          should.fail();
+          should.fail('Should throw');
         } catch (err) {
-          console.log(err);
           err.message.should.match(/Line: 2 Column: 6 - Unexpected token :/);
           err.stack.should.match(/\s*at .*?\.parse.*alce\.js/);
         }
+      });
+      it('should handle unsupported javscript constructs', function() {
+        try {
+          ALCE.parse('\n{ foo: function(){} }');
+          should.fail('Should throw');
+        } catch (err) {
+          err.message.should.match(/Line: 2 Column: 7 - Unexpected node: function\(\)/);
+        }
+        try {
+          ALCE.parse('\nif (true) { foo: 1 }');
+          should.fail('Should throw');
+        } catch (err) {
+          err.message.should.match(/Line: 2 Column: 1 - Unexpected token if/);
+          err.stack.should.match(/\s*at .*?\.parse.*alce\.js/);
+        }
+      });
+      it('should handle duplicate key values', function() {
+        var value = ALCE.parse('{/*1*/foo: true, /*2*/foo: false, }', {meta: true});
+        value.toString().should.equal('{/*1*/foo: true, /*2*/foo: false, }');
+        value.set('foo', 1);
+        value.toString().should.equal('{/*1*/foo: true, /*2*/foo: 1, }');
       });
     });
   });
