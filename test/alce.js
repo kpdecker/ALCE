@@ -65,42 +65,15 @@ describe('ALCE', function () {
         config.toString().should.equal('{\n  foo:\n    // a comment\n    {"foo":"bar"}\n}');
       });
       it('should insert new formatted values', function() {
-        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {
-          meta: true,
-          insertFormatter: function(parent, insert) {
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + ALCE.calcIndent(parent.preamble);
-          }
-        });
-        config.set('bar', true);
-        config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": true\n}');
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', ALCE.TWO_SPACE_FORMATTER);
       });
       it('should insert new object values', function() {
-        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {
-          meta: true,
-          objectFormatter: function(parent, object) {
-            object.indent = ALCE.calcIndent(parent.preamble);
-            object.innerPrologue = '\n' + object.indent;
-          },
-          insertFormatter: function(parent, insert) {
-            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          }
-        });
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', ALCE.TWO_SPACE_FORMATTER);
         config.set('bar', {foo: 'bar', baz: 'bat'});
         config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": {\n    "foo": "bar",\n    "baz": "bat"\n  }\n}');
       });
       it('should insert new array values', function() {
-        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', {
-          meta: true,
-          objectFormatter: function(parent, object) {
-            object.indent = ALCE.calcIndent(parent.preamble);
-            object.innerPrologue = '\n' + object.indent;
-          },
-          insertFormatter: function(parent, insert) {
-            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          }
-        });
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', ALCE.TWO_SPACE_FORMATTER);
         config.set('bar', [1,2]);
         config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": [\n    1,\n    2\n  ]\n}');
       });
@@ -131,42 +104,17 @@ describe('ALCE', function () {
         config.toString().should.equal('[\n    // a comment\n    {"foo":"bar"}\n]');
       });
       it('should insert new formatted values', function() {
-        config = ALCE.parse('[\n    // a comment\n    true\n]', {
-          meta: true,
-          insertFormatter: function(parent, insert) {
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + ALCE.calcIndent(parent.preamble);
-          }
-        });
+        config = ALCE.parse('[\n    // a comment\n    true\n]', ALCE.TWO_SPACE_FORMATTER);
         config.set(1, true);
         config.toString().should.equal('[\n    // a comment\n    true,\n  true\n]');
       });
       it('should insert new object values', function() {
-        config = ALCE.parse('[\n    // a comment\n    true\n]', {
-          meta: true,
-          objectFormatter: function(parent, object) {
-            object.indent = ALCE.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
-            object.innerPrologue = '\n' + object.indent;
-          },
-          insertFormatter: function(parent, insert) {
-            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          }
-        });
+        config = ALCE.parse('[\n    // a comment\n    true\n]', ALCE.TWO_SPACE_FORMATTER);
         config.set(1, {foo: 'bar', baz: 'bat'});
         config.toString().should.equal('[\n    // a comment\n    true,\n  {\n    "foo": "bar",\n    "baz": "bat"\n  }\n]');
       });
       it('should insert new array values', function() {
-        config = ALCE.parse('[\n    // a comment\n    true\n]', {
-          meta: true,
-          objectFormatter: function(parent, object) {
-            object.indent = ALCE.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
-            object.innerPrologue = '\n' + object.indent;
-          },
-          insertFormatter: function(parent, insert) {
-            var indent = parent.indent || ALCE.calcIndent(parent.preamble);
-            insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
-          }
-        });
+        config = ALCE.parse('[\n    // a comment\n    true\n]', ALCE.TWO_SPACE_FORMATTER);
         config.set(1, [1,2]);
         config.toString().should.equal('[\n    // a comment\n    true,\n  [\n    1,\n    2\n  ]\n]');
       });

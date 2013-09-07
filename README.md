@@ -128,6 +128,9 @@ Called when a new property is created. This is useful for defining the `separato
   }
 ```
 
+#### ALCE.TWO_SPACE_FORMATTER
+
+Formatter options that output two space indented data structures with trailing commas. May be passed directly into the `options` parameter for both `parse` and `serialize`.
 
 #### ALCE.calcIndent(preamble)
 
