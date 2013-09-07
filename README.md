@@ -1,6 +1,45 @@
 # ALCE
 
-Accepting Language Config Environment
+Accepting Language Config Environment - "Alice"
+
+Human friendly, machine editable, JSON-like config file format. Takes the JSON out of humans' nightmares.
+
+Extends JSON to allow for:
+
+- Comments
+- Relaxed identifier and syntax handling
+
+## Example
+
+```javascript
+{
+  // Section 1. Global config
+  content: "foo",
+
+  // Section 2. Environment config
+  // WARN: A meaningful here be dragons comment
+  otherContent: [
+    // Note that trailing spaces and single quotes don't cause mass chaos
+    'see!',
+  ]
+}
+```
+
+## Usage
+
+```
+npm install --save alce
+```
+
+```javascript
+var ALCE = require('ALCE');
+
+var config = ALCE.parse(configSource, {meta: true});
+config.set('key', 'new value');
+config.toString();
+config.toObject();
+```
+
 ## API
 
 ### ALCE.parse(configSource, options)
@@ -19,6 +58,16 @@ Converts a ACLE or javascript object to it's string representation.
 - `object`: Object to convert to a string
 - `options`: Formatter options when converting a javascript object. See [Formatters](#formatters) for more info.
 
+### Metadata Objects
+
+#### #get(id)
+
+Returns the ACLE or primitive value stored on the object under a given key. `undefined` if no key exists.
+
+#### #set(id, value)
+
+Sets `value` to `id` converting to an ACLE object as necessary. If replacing an existing value, the formatting of that value will be maintained. If creating a new value, or child values, will use the rules defined in the `options` formatters.
+
 #### Array-like methods
 
 ACLE instances representing arrays additionally implement:
@@ -32,15 +81,28 @@ ACLE instances representing arrays additionally implement:
 
 All of which behave as they would if operating on an normal array.
 
+#### #toString()
 
-Human friendly JSON-like config file format. Takes the JSON out of humans' nightmares.
+Returns the current config node contents in as close to the user's input format as possible.
+
+#### #toObject()
+
+Returns a generic javascript object with all config values stripped of any metadata. Useful for passing to other APIs or when metadata is not necessary.
+
+
+### Formatters
+
+Formatters control how newly created nodes are rendering. The may modify the `preamble`, `prologue`,
+and if applicable `innerPrologue`, fields on the new objects to control the formatting around the new object.
+
+
 #### #objectFormatter(parent, object)
 
 Called when a new object or array is created. Generally `parent` will be an array instance or a property. The `isArray` field may be used to determine if `parent` or `object` is an array.
 
 ```javascript
   objectFormatter: function(parent, object) {
-    object.indent = alce.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
+    object.indent = ALCE.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
     object.innerPrologue = '\n' + object.indent;
   },
 ```
@@ -51,7 +113,7 @@ Called when a new value is inserted into an array or object instance. `insert` w
 
 ```javascript
   insertFormatter: function(parent, insert) {
-    var indent = parent.indent || alce.calcIndent(parent.preamble);
+    var indent = parent.indent || ALCE.calcIndent(parent.preamble);
     insert.preamble = (parent.children.length ? ',' : '') + '\n  ' + indent;
   },
 ```
@@ -66,6 +128,7 @@ Called when a new property is created. This is useful for defining the `separato
   }
 ```
 
-#### alce.calcIndent(preamble)
+
+#### ALCE.calcIndent(preamble)
 
 Utilitity method for formatters. Determines the indentation that should be used for a node relative to a given prefix. This is helpful for the `inserFormatter` to determine where to align new children inserted into an object.
