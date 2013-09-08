@@ -107,11 +107,11 @@ describe('ALCE', function () {
         config.get('foo').get('bar').should.equal('bat');
       });
       it('should update existing values', function() {
-        config.set('foo', false);
+        config.set('foo', false).should.equal(false);
         config.toString().should.equal('{\n  foo:\n    // a comment\n    false\n}');
       });
       it('should update existing values', function() {
-        config.set('foo', {foo: 'bar'});
+        config.set('foo', {foo: 'bar'}).toObject().should.eql({foo: 'bar'});
         config.toString().should.equal('{\n  foo:\n    // a comment\n    {"foo":"bar"}\n}');
       });
       it('should insert new formatted values', function() {
@@ -156,11 +156,11 @@ describe('ALCE', function () {
       });
 
       it('should update existing values', function() {
-        config.set(0, false);
+        config.set(0, false).should.equal(false);
         config.toString().should.equal('[\n    // a comment\n    false\n]');
       });
       it('should update existing values with complex', function() {
-        config.set(0, {foo: 'bar'});
+        config.set(0, {foo: 'bar'}).toObject().should.eql({foo: 'bar'});
         config.toString().should.equal('[\n    // a comment\n    {"foo":"bar"}\n]');
       });
       it('should insert new formatted values', function() {
