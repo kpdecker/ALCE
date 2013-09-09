@@ -66,7 +66,7 @@ describe('ALCE', function () {
       ALCE.stringify(ALCE.parse('{foo: "bar"}', {meta: true})).should.equal('{foo: "bar"}');
     });
     it('should handle javascript objects', function() {
-      ALCE.stringify({foo: "bar"}).should.equal('{"foo":"bar"}');
+      ALCE.stringify({foo: "bar"}).should.equal('{\n  "foo": "bar"\n}');
     });
     it('should allow formatter', function() {
       ALCE.stringify({foo: "bar"}, ALCE.TWO_SPACE_FORMATTER).should.equal('{\n  "foo": "bar"\n}');
@@ -112,7 +112,7 @@ describe('ALCE', function () {
       });
       it('should update existing values', function() {
         config.set('foo', {foo: 'bar'}).toObject().should.eql({foo: 'bar'});
-        config.toString().should.equal('{\n  foo:\n    // a comment\n    {"foo":"bar"}\n}');
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    {\n    "foo": "bar"\n  }\n}');
       });
       it('should insert new formatted values', function() {
         config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', ALCE.TWO_SPACE_FORMATTER);
@@ -161,7 +161,7 @@ describe('ALCE', function () {
       });
       it('should update existing values with complex', function() {
         config.set(0, {foo: 'bar'}).toObject().should.eql({foo: 'bar'});
-        config.toString().should.equal('[\n    // a comment\n    {"foo":"bar"}\n]');
+        config.toString().should.equal('[\n    // a comment\n    {\n    "foo": "bar"\n  }\n]');
       });
       it('should insert new formatted values', function() {
         config = ALCE.parse('[\n    // a comment\n    true\n]', ALCE.TWO_SPACE_FORMATTER);
