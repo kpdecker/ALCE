@@ -97,17 +97,26 @@ Formatters control how newly created nodes are rendering. The may modify the `pr
 and if applicable `innerPrologue`, fields on the new objects to control the formatting around the new object.
 
 
+### #seedIndent(parent, object)
+
+Called for both parsed and new objects, allowing for the formatter to determine any state information necessary.
+
+```javascript
+  seedIndent: function(parent, object) {
+    if (parent) {
+      object.indent = exports.calcIndent(parent.preamble || '') + (parent.isArray ? '  ' : '');
+    } else {
+      object.indent = '';
+    }
+  },
+```
+
 #### #objectFormatter(parent, object)
 
 Called when a new object or array is created. Generally `parent` will be an array instance or a property. The `isArray` field may be used to determine if `parent` or `object` is an array.
 
 ```javascript
   objectFormatter: function(parent, object) {
-    if (parent) {
-      object.indent = exports.calcIndent(parent.preamble) + (parent.isArray ? '  ' : '');
-    } else {
-      object.indent = '';
-    }
     object.innerPrologue = '\n' + object.indent;
   },
 ```

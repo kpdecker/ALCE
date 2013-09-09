@@ -122,6 +122,11 @@ describe('ALCE', function () {
         config.set('bar', {foo: 'bar', baz: 'bat'});
         config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  "bar": {\n    "foo": "bar",\n    "baz": "bat"\n  }\n}');
       });
+      it('should insert new object nested values', function() {
+        config = ALCE.parse('{\n  foo:\n    // a comment\n    true,\n  bar: {}\n}', ALCE.TWO_SPACE_FORMATTER);
+        config.get('bar').set('bar', {foo: 'bar', baz: 'bat'});
+        config.toString().should.equal('{\n  foo:\n    // a comment\n    true,\n  bar: {\n    "bar": {\n      "foo": "bar",\n      "baz": "bat"\n    }}\n}');
+      });
       it('should insert new array values', function() {
         config = ALCE.parse('{\n  foo:\n    // a comment\n    true\n}', ALCE.TWO_SPACE_FORMATTER);
         config.set('bar', [1,2]);
