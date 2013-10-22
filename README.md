@@ -33,7 +33,7 @@ npm install --save alce
 ```
 
 ```javascript
-var ALCE = require('ALCE');
+var ALCE = require('alce');
 
 var config = ALCE.parse(configSource, {meta: true});
 config.set('key', 'new value');
