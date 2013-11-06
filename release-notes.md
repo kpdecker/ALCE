@@ -2,7 +2,14 @@
 
 ## Development
 
-[Commits](https://github.com/walmartlabs/ALCE/compare/v1.0.0...master)
+[Commits](https://github.com/walmartlabs/ALCE/compare/v1.0.1...master)
+
+## v1.0.1 - November 6th, 2013
+
+- Add repository field to package.json - 413124c
+- Fix import issue - 2ee031c
+
+[Commits](https://github.com/walmartlabs/ALCE/compare/v1.0.0...v1.0.1)
 
 ## v1.0.0 - September 7th, 2013
 
