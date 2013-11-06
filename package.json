@@ -1,6 +1,6 @@
 {
   "name": "alce",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Accepting Language Config Environment",
   "keywords": [
     "json parser whitespace comments configuration"
