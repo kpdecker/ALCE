@@ -110,6 +110,10 @@ describe('ALCE', function () {
         config.set('foo', false).should.equal(false);
         config.toString().should.equal('{\n  foo:\n    // a comment\n    false\n}');
       });
+      it('should remove values', function() {
+        config.remove('foo');
+        config.toString().should.equal('{\n}');
+      });
       it('should update existing values', function() {
         config.set('foo', {foo: 'bar'}).toObject().should.eql({foo: 'bar'});
         config.toString().should.equal('{\n  foo:\n    // a comment\n    {\n    "foo": "bar"\n  }\n}');
