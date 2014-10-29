@@ -1,16 +1,6 @@
 /*global grunt */
 module.exports = function(grunt) {
   grunt.initConfig({
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      files: [
-        'lib/**/*.js',
-        'test/**/*.js'
-      ]
-    },
-
     mochacov: {
       test: {
         options: {
@@ -30,9 +20,8 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-cov');
 
-  grunt.registerTask('test', ['jshint', 'mochacov:test']);
+  grunt.registerTask('test', ['mochacov:test']);
   grunt.registerTask('cov', ['mochacov:cov']);
 };
