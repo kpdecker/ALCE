@@ -69,6 +69,10 @@ Returns the ACLE or primitive value stored on the object under a given key. `und
 
 Sets `value` to `id` converting to an ACLE object as necessary. If replacing an existing value, the formatting of that value will be maintained. If creating a new value, or child values, will use the rules defined in the `options` formatters.
 
+#### #remove(id)
+
+Removes the key specified by `id`.
+
 #### Array-like methods
 
 ACLE instances representing arrays additionally implement:
