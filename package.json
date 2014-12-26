@@ -6,14 +6,14 @@
     "json parser whitespace comments configuration"
   ],
   "dependencies": {
-    "esprima": "1.2.x",
-    "estraverse": "1.5.x"
+    "esprima": "^1.2.0",
+    "estraverse": "^1.5.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "0.x.x",
     "grunt-mocha-cov": "0.x.x",
-    "mocha": "1.x.x",
+    "mocha": "^2.0.0",
     "should": "3.x.x"
   },
   "repository": {
