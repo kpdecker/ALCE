@@ -31,6 +31,14 @@
         "branchTracking": true
       }
     },
-    "test": "./node_modules/.bin/mocha"
-  }
+    "test": "mocha"
+  },
+  "bugs": {
+    "url": "https://github.com/walmartlabs/alce/issues"
+  },
+  "homepage": "https://github.com/walmartlabs/alce#readme",
+  "directories": {
+    "test": "test"
+  },
+  "license": "MIT"
 }
