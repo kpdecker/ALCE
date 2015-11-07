@@ -13,6 +13,8 @@
   arrays: [
     'foo',
     9,
+    -9,
+    +9,
     {bar: true},
     [{
       nested: true

@@ -85,7 +85,7 @@ describe('ALCE', function () {
           bar: {}
         },
 
-        arrays: [ 'foo', 9, {bar: true}, [{nested: true}]],
+        arrays: [ 'foo', 9, -9, 9, {bar: true}, [{nested: true}]],
 
         expression: ({foo : true}),
         "other stuff": true
