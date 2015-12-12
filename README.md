@@ -152,7 +152,7 @@ Formatter options that output two space indented data structures with trailing c
 
 #### ALCE.calcIndent(preamble)
 
-Utilitity method for formatters. Determines the indentation that should be used for a node relative to a given prefix. This is helpful for the `inserFormatter` to determine where to align new children inserted into an object.
+Utilitity method for formatters. Determines the indentation that should be used for a node relative to a given prefix. This is helpful for the `insertFormatter` to determine where to align new children inserted into an object.
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/walmartlabs/alce/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
