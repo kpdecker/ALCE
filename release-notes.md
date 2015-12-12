@@ -2,7 +2,12 @@
 
 ## Development
 
-[Commits](https://github.com/kpdecker/ALCE/compare/v1.1.1...master)
+[Commits](https://github.com/kpdecker/ALCE/compare/v1.2.0...master)
+
+## v1.2.0 - December 12th, 2015
+- [#1](https://github.com/kpdecker/ALCE/pull/1) - handle unary expressions ([@lukekarrys](https://api.github.com/users/lukekarrys))
+
+[Commits](https://github.com/kpdecker/ALCE/compare/v1.1.1...v1.2.0)
 
 ## v1.1.1 - December 12th, 2015
 - Update to point to new maintained repo - fe05f3e
