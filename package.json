@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/walmartlabs/alce.git"
+    "url": "git://github.com/kpdecker/alce.git"
   },
   "engines": {
     "node": ">=0.8.0"
@@ -34,9 +34,9 @@
     "test": "mocha"
   },
   "bugs": {
-    "url": "https://github.com/walmartlabs/alce/issues"
+    "url": "https://github.com/kpdecker/alce/issues"
   },
-  "homepage": "https://github.com/walmartlabs/alce#readme",
+  "homepage": "https://github.com/kpdecker/alce#readme",
   "directories": {
     "test": "test"
   },
